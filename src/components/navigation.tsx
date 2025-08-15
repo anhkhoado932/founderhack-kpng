@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { MessageCircle, Users } from "lucide-react"
+import { MessageCircle, Users, Home } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 interface NavigationProps {
   activeTab: "chat" | "community"
@@ -23,6 +24,14 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
           </div>
           
           <div className="flex items-center space-x-6 ml-auto">
+            <Link 
+              href="/" 
+              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Home className="w-5 h-5" />
+              <span>Landing</span>
+            </Link>
+            
             <button
               onClick={() => onTabChange("chat")}
               className={cn(
@@ -60,6 +69,14 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               </div>
               <span className="text-lg font-bold text-foreground">KPNG</span>
             </div>
+            
+            <Link 
+              href="/" 
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-sm">Landing</span>
+            </Link>
           </div>
           
           <div className="grid w-full grid-cols-2">
@@ -82,7 +99,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
                 "flex flex-col items-center space-y-2 px-4 py-3 border-b-2 transition-colors",
                 activeTab === "community"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground"
+                  : "text-muted-foreground"
               )}
             >
               <Users className="w-5 h-5" />
