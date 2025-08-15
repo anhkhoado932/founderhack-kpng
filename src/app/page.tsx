@@ -1,7 +1,22 @@
+'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth-context'
 import { MessageCircle, Users, Shield, Zap, Heart, ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
+  const { user } = useAuth()
+  const router = useRouter()
+
+  const handleGetStarted = () => {
+    if (user) {
+      router.push('/home')
+    } else {
+      router.push('/login')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Navigation */}
@@ -14,11 +29,34 @@ export default function LandingPage() {
             <span className="text-2xl font-bold text-foreground">KPNG</span>
           </div>
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/home" className="text-foreground hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link href="/home" className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
-              Get Started
+            {user ? (
+              <>
+                <Link href="/home" className="text-foreground hover:text-primary transition-colors">
+                  Home
+                </Link>
+                <Link href="/home" className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="text-foreground hover:text-primary transition-colors">
+                  Login
+                </Link>
+                <Link href="/login" className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                  Get Started
+                </Link>
+              </>
+            )}
+          </div>
+          
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Link 
+              href={user ? "/home" : "/login"}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+            >
+              {user ? 'Dashboard' : 'Login'}
             </Link>
           </div>
         </div>
@@ -40,13 +78,13 @@ export default function LandingPage() {
             without the unnecessary worry that comes with traditional Google searches.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/home" 
+            <button 
+              onClick={handleGetStarted}
               className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold text-lg hover:bg-primary/90 transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
             >
-              <span>Start Your Journey</span>
+              <span>{user ? 'Go to Dashboard' : 'Start Your Journey'}</span>
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </button>
             <button className="px-8 py-4 border-2 border-primary text-primary rounded-lg font-semibold text-lg hover:bg-primary hover:text-primary-foreground transition-all">
               Watch Demo
             </button>
@@ -161,13 +199,13 @@ export default function LandingPage() {
           <p className="text-xl text-primary-foreground/90 mb-8">
             Join thousands of parents who've found confidence, clarity, and community with KPNG
           </p>
-          <Link 
-            href="/home" 
+          <button 
+            onClick={handleGetStarted}
             className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary rounded-xl font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105"
           >
-            <span>Get Started Now</span>
+            <span>{user ? 'Go to Dashboard' : 'Get Started Now'}</span>
             <ArrowRight className="w-5 h-5" />
-          </Link>
+          </button>
         </div>
       </section>
 
